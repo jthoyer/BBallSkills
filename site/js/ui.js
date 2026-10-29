@@ -132,8 +132,8 @@ export function suggestControl() {
  * data-yt and data-title).
  *
  * A thumbnail that fails to load is NOT a removed video: interactions.js
- * swaps in a placeholder and play still works. Only status 'removed' or an
- * empty youtubeId shows "Video no longer available".
+ * swaps in a placeholder and play still works. Only status 'removed', an
+ * empty youtubeId or a malformed one shows "Video no longer available".
  */
 export function videoBlock(resource, label) {
   if (!resource || resource.status === 'removed' || !/^[A-Za-z0-9_-]{11}$/.test(resource.youtubeId || '')) {

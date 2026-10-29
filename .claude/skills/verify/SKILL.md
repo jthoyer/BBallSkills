@@ -11,7 +11,7 @@ The site is static. It is served from `site/` under the `/BBallSkills/` subpath,
 
 ```bash
 D=$(mktemp -d); mkdir -p "$D/srv"; ln -sfn "$PWD/site" "$D/srv/BBallSkills"
-cd "$D/srv" && python3 -m http.server 8765
+(cd "$D/srv" && python3 -m http.server 8765 &)
 ```
 
 Open http://localhost:8765/BBallSkills/. Deep links work, e.g. `#/drills/form-shooting`.
@@ -26,7 +26,7 @@ node scripts/check-contrast.mjs
 node scripts/check-site.cjs
 ```
 
-Each prints `N checks, 0 failed` when green. `check-site.cjs` drives Chromium through Playwright, so it needs Playwright available to `require('playwright')`.
+Each ends with `0 failed` when green (`N checks`, or `N pairings` for contrast). `check-site.cjs` drives Chromium through Playwright, so it needs Playwright available to `require('playwright')`.
 
 ## Traps
 

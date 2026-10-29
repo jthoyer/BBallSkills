@@ -376,7 +376,7 @@ export const drills = {
     level: 'Beginner',
     group: 'passing',
     positions: ['point-guard'],
-    needs: ['Ball', 'Group of 4 to 6']
+    needs: ['Ball', 'Group']
   },
   'two-ball-passing': {
     title: 'Two-Ball Passing',
@@ -420,7 +420,7 @@ export const drills = {
     title: 'Footwork Drill',
     resource: 'pivot-jab-pump-fake',
     why: 'A jab step and a pump fake can move a defender off balance, which gives you a cleaner shot or pass.',
-    teaches: 'Footwork with the ball (check when watching).',
+    teaches: 'Footwork with the ball, as shown in the video.',
     cues: ['Pivot foot stays planted', 'Short, sharp jab', 'Sell the fake'],
     doIt: 'Do 8 reps on each side. Then add a partner as a defender.',
     level: 'Intermediate',
@@ -458,7 +458,7 @@ export const drills = {
     title: 'Closing Time',
     resource: 'closing-time',
     why: 'A good closeout takes away the open shot without letting the ball handler blow past you.',
-    teaches: 'Closing out on a ball handler (check when watching).',
+    teaches: 'Defensive work, as shown in the video.',
     cues: ['Sprint, then short steps', 'Hand up on the shot', 'Stay low and balanced'],
     doIt: 'With a partner, do 10 closeouts each. Swap after 10.',
     level: 'Intermediate',

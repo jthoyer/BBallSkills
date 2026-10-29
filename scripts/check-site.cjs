@@ -179,7 +179,7 @@ async function open(page, hash) {
     const { page } = s;
     await open(page, hash);
     const total = await page.evaluate(() => document.querySelectorAll('#view a[href], #view button').length);
-    let worst = 0, bad = [];
+    const bad = [];
     for (let i = 0; i < total + 6; i++) {
       await page.keyboard.press('Tab');
       const m = await page.evaluate(() => {
@@ -188,7 +188,6 @@ async function open(page, hash) {
         return { bottom: e.getBoundingClientRect().bottom, top: bar.getBoundingClientRect().top, t: (e.textContent || '').trim().slice(0, 20) };
       });
       if (m && m.bottom > m.top + 0.5) bad.push(`${m.t} bottom ${Math.round(m.bottom)} > bar top ${Math.round(m.top)}`);
-      if (m) worst = Math.max(worst, m.bottom - m.top);
     }
     ok(bad.length === 0, `Focus ${hash} @390x500: every focused element sits above the tab bar (${bad.slice(0, 3).join('; ')})`);
     await s.context.close();
