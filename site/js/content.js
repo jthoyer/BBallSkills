@@ -12,9 +12,10 @@
  *
  * Videos: every resource below was found by a web search, and the ID was
  * copied from a youtube.com URL that the search returned. `found` records the
- * result title and URL. Nobody has watched these videos yet, so every resource
- * carries `watched: false`. Flip it to true ONLY after a person has watched the
- * whole video and it shows what the drill page says (see WATCHLIST.md).
+ * result title and URL. All 18 were checked on 29 Oct 2026: a Gemini pass over
+ * every video, then a person spot-checked #5, #12, #15 and #17. A new video
+ * starts at `watched: false`. Flip it to true ONLY after a person has watched
+ * the whole video and it shows what the drill page says (see WATCHLIST.md).
  */
 
 /**
@@ -41,7 +42,7 @@ export const resources = {
     title: 'Jr. NBA at Home: 100 Dribble Drill',
     channel: JR_NBA,
     length: '1:23',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Jr. NBA at Home: 100 Dribble Drill - YouTube',
@@ -54,7 +55,7 @@ export const resources = {
     title: 'Stationary Under The Leg Dribble Drill',
     channel: JR_NBA,
     length: '1:32',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Stationary Under The Leg Dribble Drill - YouTube',
@@ -67,7 +68,7 @@ export const resources = {
     title: 'Scissors Dribble Drill',
     channel: JR_NBA,
     length: '1:37',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Scissors Dribble Drill - YouTube',
@@ -80,7 +81,7 @@ export const resources = {
     title: 'Jr. NBA at Home: Perfect Shot No Basket Drill',
     channel: JR_NBA,
     length: '1:11',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Jr. NBA at Home: Perfect Shot No Basket Drill - YouTube',
@@ -93,7 +94,7 @@ export const resources = {
     title: 'Form Shooting Drill with Chiene Jones',
     channel: JR_NBA,
     length: '0:53',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Form Shooting Drill with Chiene Jones - YouTube',
@@ -106,7 +107,7 @@ export const resources = {
     title: 'Jump Stop Shooting Drill',
     channel: JR_NBA,
     length: '2:15',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Jump Stop Shooting Drill - YouTube',
@@ -119,7 +120,7 @@ export const resources = {
     title: 'Pass the Rock',
     channel: JR_NBA,
     length: '1:06',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Pass the Rock',
@@ -132,7 +133,7 @@ export const resources = {
     title: 'Pass & Follow Drill',
     channel: JR_NBA,
     length: '2:08',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Pass & Follow Drill - YouTube',
@@ -145,7 +146,7 @@ export const resources = {
     title: '2-Ball Passing Drill with Jonathan Chang',
     channel: JR_NBA,
     length: '0:42',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: '2-Ball Passing Drill with Jonathan Chang - YouTube',
@@ -158,7 +159,7 @@ export const resources = {
     title: 'Forward Pivot Drill',
     channel: JR_NBA,
     length: '1:31',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Forward Pivot Drill - YouTube',
@@ -171,7 +172,7 @@ export const resources = {
     title: 'Reverse Pivot Drill',
     channel: JR_NBA,
     length: '1:43',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Reverse Pivot Drill - YouTube',
@@ -184,7 +185,7 @@ export const resources = {
     title: 'Footwork Drill with Ian Thomas-Minor',
     channel: JR_NBA,
     length: '0:54',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Footwork Drill with Ian Thomas-Minor - YouTube',
@@ -197,7 +198,7 @@ export const resources = {
     title: 'Follow The Leader Slides Drill',
     channel: JR_NBA,
     length: '2:18',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Follow The Leader Slides Drill - YouTube',
@@ -210,7 +211,7 @@ export const resources = {
     title: 'Side/Lateral Push Drill',
     channel: JR_NBA,
     length: '1:59',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Side/Lateral Push Drill - YouTube',
@@ -223,7 +224,7 @@ export const resources = {
     title: 'Closing Time',
     channel: JR_NBA,
     length: '1:15',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Closing Time',
@@ -236,7 +237,7 @@ export const resources = {
     title: 'No Ball Box Out Drill',
     channel: JR_NBA,
     length: '6:04',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'No Ball Box Out Drill - YouTube',
@@ -249,7 +250,7 @@ export const resources = {
     title: 'Box Out Drill with Baye Keita',
     channel: JR_NBA,
     length: '0:51',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: 'Box Out Drill with Baye Keita - YouTube',
@@ -262,7 +263,7 @@ export const resources = {
     title: '3-Second Box Out Drill',
     channel: JR_NBA,
     length: '4:20',
-    watched: false,
+    watched: true,
     status: 'ok',
     found: {
       searchTitle: '3-Second Box Out Drill - YouTube',
