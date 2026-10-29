@@ -29,7 +29,7 @@ It is evidence of what was found, not proof of what the video shows.
 | 9 | Two-Ball Passing (passing, Intermediate) | 2-Ball Passing Drill with Jonathan Chang | Jr. NBA | https://www.youtube.com/watch?v=xuOlcPH5mOE | 2-Ball Passing Drill with Jonathan Chang - YouTube |
 | 10 | Forward Pivot (footwork, Beginner) | Forward Pivot Drill | Jr. NBA | https://www.youtube.com/watch?v=3GPNfqIzs9Y | Forward Pivot Drill - YouTube |
 | 11 | Reverse Pivot (footwork, Beginner) | Reverse Pivot Drill | Jr. NBA | https://www.youtube.com/watch?v=5DgXrx7ZkHU | Reverse Pivot Drill - YouTube |
-| 12 | Footwork Drill (footwork, Intermediate) | Footwork Drill with Ian Thomas-Minor | Jr. NBA | https://www.youtube.com/watch?v=xXtmu-ycZ04 | Footwork Drill with Ian Thomas-Minor - YouTube |
+| 12 | Jab Step and Pump Fake (footwork, Intermediate) | Footwork Drill with Ian Thomas-Minor | Jr. NBA | https://www.youtube.com/watch?v=xXtmu-ycZ04 | Footwork Drill with Ian Thomas-Minor - YouTube |
 | 13 | Follow the Leader Slides (defence, Beginner) | Follow The Leader Slides Drill | Jr. NBA | https://www.youtube.com/watch?v=P-fqrEYD6sQ | Follow The Leader Slides Drill - YouTube |
 | 14 | Side/Lateral Push Drill (defence, Beginner) | Side/Lateral Push Drill | Jr. NBA | https://www.youtube.com/watch?v=j7JUvMrXLRk | Side/Lateral Push Drill - YouTube |
 | 15 | Closing Time (defence, Intermediate) | Closing Time | Jr. NBA | https://www.youtube.com/watch?v=POwKicvOggw | Closing Time |

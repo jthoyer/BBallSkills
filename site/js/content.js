@@ -40,7 +40,7 @@ export const resources = {
     youtubeId: 'v_jqSQswdbU',
     title: 'Jr. NBA at Home: 100 Dribble Drill',
     channel: JR_NBA,
-    length: null,
+    length: '1:23',
     watched: false,
     status: 'ok',
     found: {
@@ -53,7 +53,7 @@ export const resources = {
     youtubeId: 'KIBJzEn_QG8',
     title: 'Stationary Under The Leg Dribble Drill',
     channel: JR_NBA,
-    length: null,
+    length: '1:32',
     watched: false,
     status: 'ok',
     found: {
@@ -66,7 +66,7 @@ export const resources = {
     youtubeId: 'D2hhRG2Hda4',
     title: 'Scissors Dribble Drill',
     channel: JR_NBA,
-    length: null,
+    length: '1:37',
     watched: false,
     status: 'ok',
     found: {
@@ -79,7 +79,7 @@ export const resources = {
     youtubeId: '2vYUUPPasyQ',
     title: 'Jr. NBA at Home: Perfect Shot No Basket Drill',
     channel: JR_NBA,
-    length: null,
+    length: '1:11',
     watched: false,
     status: 'ok',
     found: {
@@ -92,7 +92,7 @@ export const resources = {
     youtubeId: 'ZB2ARp7iKO0',
     title: 'Form Shooting Drill with Chiene Jones',
     channel: JR_NBA,
-    length: null,
+    length: '0:53',
     watched: false,
     status: 'ok',
     found: {
@@ -105,7 +105,7 @@ export const resources = {
     youtubeId: 'AueLd1-H1V8',
     title: 'Jump Stop Shooting Drill',
     channel: JR_NBA,
-    length: null,
+    length: '2:15',
     watched: false,
     status: 'ok',
     found: {
@@ -118,7 +118,7 @@ export const resources = {
     youtubeId: 'k9DtRH442uA',
     title: 'Pass the Rock',
     channel: JR_NBA,
-    length: null,
+    length: '1:06',
     watched: false,
     status: 'ok',
     found: {
@@ -131,7 +131,7 @@ export const resources = {
     youtubeId: 'UxN-i7WnOGs',
     title: 'Pass & Follow Drill',
     channel: JR_NBA,
-    length: null,
+    length: '2:08',
     watched: false,
     status: 'ok',
     found: {
@@ -144,7 +144,7 @@ export const resources = {
     youtubeId: 'xuOlcPH5mOE',
     title: '2-Ball Passing Drill with Jonathan Chang',
     channel: JR_NBA,
-    length: null,
+    length: '0:42',
     watched: false,
     status: 'ok',
     found: {
@@ -157,7 +157,7 @@ export const resources = {
     youtubeId: '3GPNfqIzs9Y',
     title: 'Forward Pivot Drill',
     channel: JR_NBA,
-    length: null,
+    length: '1:31',
     watched: false,
     status: 'ok',
     found: {
@@ -170,7 +170,7 @@ export const resources = {
     youtubeId: '5DgXrx7ZkHU',
     title: 'Reverse Pivot Drill',
     channel: JR_NBA,
-    length: null,
+    length: '1:43',
     watched: false,
     status: 'ok',
     found: {
@@ -183,7 +183,7 @@ export const resources = {
     youtubeId: 'xXtmu-ycZ04',
     title: 'Footwork Drill with Ian Thomas-Minor',
     channel: JR_NBA,
-    length: null,
+    length: '0:54',
     watched: false,
     status: 'ok',
     found: {
@@ -196,7 +196,7 @@ export const resources = {
     youtubeId: 'P-fqrEYD6sQ',
     title: 'Follow The Leader Slides Drill',
     channel: JR_NBA,
-    length: null,
+    length: '2:18',
     watched: false,
     status: 'ok',
     found: {
@@ -209,7 +209,7 @@ export const resources = {
     youtubeId: 'j7JUvMrXLRk',
     title: 'Side/Lateral Push Drill',
     channel: JR_NBA,
-    length: null,
+    length: '1:59',
     watched: false,
     status: 'ok',
     found: {
@@ -222,7 +222,7 @@ export const resources = {
     youtubeId: 'POwKicvOggw',
     title: 'Closing Time',
     channel: JR_NBA,
-    length: null,
+    length: '1:15',
     watched: false,
     status: 'ok',
     found: {
@@ -235,7 +235,7 @@ export const resources = {
     youtubeId: 'J6QmHTVdKKc',
     title: 'No Ball Box Out Drill',
     channel: JR_NBA,
-    length: null,
+    length: '6:04',
     watched: false,
     status: 'ok',
     found: {
@@ -248,7 +248,7 @@ export const resources = {
     youtubeId: '1wYXo8l2k58',
     title: 'Box Out Drill with Baye Keita',
     channel: JR_NBA,
-    length: null,
+    length: '0:51',
     watched: false,
     status: 'ok',
     found: {
@@ -261,7 +261,7 @@ export const resources = {
     youtubeId: 'bhTAm_1UflA',
     title: '3-Second Box Out Drill',
     channel: JR_NBA,
-    length: null,
+    length: '4:20',
     watched: false,
     status: 'ok',
     found: {
@@ -282,9 +282,9 @@ export const drills = {
     title: '100 Dribble Drill',
     resource: 'hundred-dribble',
     why: 'When your dribble is steady you can keep your eyes up and see the open teammate instead of watching the ball.',
-    teaches: 'Steady, controlled dribbling with each hand.',
+    teaches: 'Controlled dribbling at different heights: ankle, knee and shoulder.',
     cues: ['Eyes up', 'Fingertips, not palm', 'Keep the ball low'],
-    doIt: 'Dribble 100 times with your right hand, then 100 with your left.',
+    doIt: 'Do 100 dribbles, mixing ankle, knee and shoulder height. Then do 100 with your other hand.',
     level: 'Beginner',
     group: 'ball-handling',
     positions: ['point-guard', 'shooting-guard'],
@@ -331,14 +331,14 @@ export const drills = {
   'form-shooting': {
     title: 'Form Shooting',
     resource: 'form-shooting',
-    why: 'Shooting close to the hoop lets you fix your form first. Good form is what you rely on when you shoot from farther out.',
-    teaches: 'Clean shooting form from close range.',
-    cues: ['Square your feet', 'Shoot up and through', 'Hold your finish'],
-    doIt: 'Make 10 shots from close to the hoop. Count only the ones with good form.',
+    why: 'Shooting straight up while lying down shows whether the ball leaves your hand cleanly. Good form is what you rely on when you shoot from farther out.',
+    teaches: 'Shooting form, practised lying on your back.',
+    cues: ['Elbow under the ball', 'Flick your wrist', 'Ball comes straight back down'],
+    doIt: 'Lie on your back and shoot the ball straight up 20 times. It should land back in your hands.',
     level: 'Beginner',
     group: 'shooting',
     positions: ['shooting-guard', 'small-forward'],
-    needs: ['Ball', 'Hoop']
+    needs: ['Ball', 'Floor to lie on']
   },
   'jump-stop-shooting': {
     title: 'Jump Stop Shooting',
@@ -360,11 +360,11 @@ export const drills = {
     why: 'Quick, accurate passes move the defence and find the open player. The ball moves faster than anyone can run.',
     teaches: 'Catching and passing quickly and accurately.',
     cues: ['Step to your target', 'Hands up and ready', 'Catch with two hands'],
-    doIt: 'Pass back and forth for 30 seconds and count your passes. Try to beat that number.',
+    doIt: 'In a small group inside the key, make as many passes as you can in 30 seconds. Try to beat your score.',
     level: 'Beginner',
     group: 'passing',
     positions: ['point-guard'],
-    needs: ['Ball', 'Partner']
+    needs: ['Ball', 'Group']
   },
   'pass-and-follow': {
     title: 'Pass and Follow',
@@ -417,10 +417,10 @@ export const drills = {
     needs: ['Ball', 'Flat floor']
   },
   'pivot-jab-pump-fake': {
-    title: 'Footwork Drill',
+    title: 'Jab Step and Pump Fake',
     resource: 'pivot-jab-pump-fake',
     why: 'A jab step and a pump fake can move a defender off balance, which gives you a cleaner shot or pass.',
-    teaches: 'Footwork with the ball, as shown in the video.',
+    teaches: 'Using a jab step and a pump fake to move a defender.',
     cues: ['Pivot foot stays planted', 'Short, sharp jab', 'Sell the fake'],
     doIt: 'Do 8 reps on each side. Then add a partner as a defender.',
     level: 'Intermediate',
@@ -458,8 +458,8 @@ export const drills = {
     title: 'Closing Time',
     resource: 'closing-time',
     why: 'A good closeout takes away the open shot without letting the ball handler blow past you.',
-    teaches: 'Defensive work, as shown in the video.',
-    cues: ['Sprint, then short steps', 'Hand up on the shot', 'Stay low and balanced'],
+    teaches: 'Closing out under control: chop your feet and get a hand up, without fouling.',
+    cues: ['Sprint, then chop your feet', 'Hand up', 'No fouling'],
     doIt: 'With a partner, do 10 closeouts each. Swap after 10.',
     level: 'Intermediate',
     group: 'defence',
@@ -484,13 +484,13 @@ export const drills = {
     title: 'Box Out Drill',
     resource: 'box-out-at-home',
     why: 'Every rebound you win ends their turn and gives your team the ball. Boxing out is how you earn them.',
-    teaches: 'Boxing out.',
-    cues: ['Turn and seal', 'Wide base', 'Hands up'],
-    doIt: 'Do 10 box outs, using your body and not your arms.',
+    teaches: 'The low, wide box-out stance, practised against a wall.',
+    cues: ['Sit low', 'Wide base', 'Back flat to the wall'],
+    doIt: 'Hold a box-out stance with your back to a wall for 20 seconds. Rest, then do it 3 times.',
     level: 'Beginner',
     group: 'rebounding',
     positions: ['power-forward', 'centre'],
-    needs: ['Space to move']
+    needs: ['A wall']
   },
   'three-second-box-out': {
     title: '3-Second Box Out',
