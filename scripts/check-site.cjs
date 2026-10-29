@@ -99,9 +99,7 @@ async function open(page, hash) {
       const sameFail = s.failed.filter((u) => u.includes(HOST));
       ok(sameFail.length === 0, `AC19 ${tag}: 0 failed same-origin requests (${sameFail.join(',')})`);
       ok(s.errors.length === 0, `${tag}: no page errors (${s.errors.join(';')})`);
-      if (hash === '#/' || hash === '#/skills/shooting' || hash === '#/drills/hundred-dribble') {
-        if (hash === '#/') ok(JSON.stringify(info.current) === JSON.stringify(['skills']), `AC1: "#/" marks Skills aria-current`);
-      }
+      if (hash === '#/') ok(JSON.stringify(info.current) === JSON.stringify(['skills']), `AC1: "#/" marks Skills aria-current`);
       if (hash === '#/nope' || hash === '#/week' || hash === '#/drills/nope' || hash === '#/skills/nope' || hash === '#/positions/nope') {
         const txt = await page.textContent('h1');
         ok(/not found/i.test(txt), `AC11 ${tag}: not-found view ("${txt}")`);
@@ -172,6 +170,38 @@ async function open(page, hash) {
     await page.waitForFunction(() => /zone/i.test(document.getElementById('page-title').textContent));
     ok(await page.evaluate(() => document.activeElement.id) === 'page-title', 'AC21: focus on #page-title after zone navigation');
     ok(await page.evaluate(() => document.querySelector('.tab[aria-current="page"]').dataset.tab) === 'positions', 'Zone keeps Positions tab current');
+    await s.context.close();
+  }
+
+  // ---- Focus is never hidden under the fixed tab bar (short viewport, long pages)
+  for (const hash of ['#/positions/zone', '#/positions/shooting-guard', '#/skills/shooting']) {
+    const s = await fresh(browser, { width: 390, height: 500 });
+    const { page } = s;
+    await open(page, hash);
+    const total = await page.evaluate(() => document.querySelectorAll('#view a[href], #view button').length);
+    let worst = 0, bad = [];
+    for (let i = 0; i < total + 6; i++) {
+      await page.keyboard.press('Tab');
+      const m = await page.evaluate(() => {
+        const e = document.activeElement; const bar = document.querySelector('.tabbar');
+        if (!e || e === document.body || !bar || bar.contains(e) || e.classList.contains('skip-link')) return null;
+        return { bottom: e.getBoundingClientRect().bottom, top: bar.getBoundingClientRect().top, t: (e.textContent || '').trim().slice(0, 20) };
+      });
+      if (m && m.bottom > m.top + 0.5) bad.push(`${m.t} bottom ${Math.round(m.bottom)} > bar top ${Math.round(m.top)}`);
+      if (m) worst = Math.max(worst, m.bottom - m.top);
+    }
+    ok(bad.length === 0, `Focus ${hash} @390x500: every focused element sits above the tab bar (${bad.slice(0, 3).join('; ')})`);
+    await s.context.close();
+  }
+
+  // ---- Placeholder label shows when the thumbnail fails; invalid ID treated like empty
+  {
+    const s = await fresh(browser);
+    await s.page.route('**/i.ytimg.com/**', (r) => r.abort());
+    await open(s.page, '#/drills/hundred-dribble');
+    await s.page.waitForSelector('.video--nothumb');
+    const lbl = await s.page.evaluate(() => getComputedStyle(document.querySelector('.video--nothumb'), '::before').content);
+    ok(/Thumbnail unavailable/.test(lbl), `Placeholder label shown when the thumbnail fails (${lbl})`);
     await s.context.close();
   }
 
@@ -262,6 +292,13 @@ async function open(page, hash) {
     const st = await s.page.evaluate(() => ({ gone: /Video no longer available/.test(document.body.textContent), iframe: document.querySelectorAll('iframe').length, play: document.querySelectorAll('.video__play,.video__thumb').length }));
     ok(st.gone && st.iframe === 0 && st.play === 0, 'AC14: empty youtubeId -> message, no thumbnail, no iframe');
     ok(!s.requests.some((u) => u.includes('ytimg')), 'AC14: empty youtubeId -> no thumbnail request');
+  });
+
+  await withContent((t) => t.replace("youtubeId: 'v_jqSQswdbU'", "youtubeId: 'bad id!'"), async (s) => {
+    await open(s.page, '#/drills/hundred-dribble');
+    const st = await s.page.evaluate(() => ({ gone: /Video no longer available/.test(document.body.textContent), n: document.querySelectorAll('iframe,.video__play,.video__thumb').length }));
+    ok(st.gone && st.n === 0, 'Invalid youtubeId format -> "Video no longer available", no iframe, no thumbnail');
+    ok(!s.requests.some((u) => u.includes('ytimg')), 'Invalid youtubeId -> no thumbnail request');
   });
 
   // ---- AC10: suggest button

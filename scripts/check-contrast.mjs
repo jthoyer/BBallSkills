@@ -41,6 +41,9 @@ const PAIRS = [
   ['focus', 'surface', 3, 'Focus ring on rows, cards and the tab bar'],
   ['text', 'bg', 4.5, 'Play video label (on its own dark pill)'],
   ['on-accent', 'accent', 3, 'Play triangle on the orange play circle (graphic)'],
+  ['accent', 'thumb', 3, 'Orange play circle against the placeholder thumbnail (graphic)'],
+  ['focus', 'thumb', 3, 'Inset focus ring on the thumbnail surface when no image has loaded (graphic)'],
+  ['muted', 'bg', 4.5, '"Thumbnail unavailable" label (on its own dark pill)'],
   ['bg', 'accent', 3, 'Play circle ring: dark ring against the orange circle (graphic)'],
 ];
 

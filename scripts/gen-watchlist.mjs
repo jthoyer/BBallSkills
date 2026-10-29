@@ -16,7 +16,7 @@ const cell = (s) => String(s).replace(/\|/g, '\\|');
 const rows = [];
 let n = 0;
 for (const [k, d] of Object.entries(drills)) {
-  const r = resources[k === d.resource ? k : d.resource];
+  const r = resources[d.resource];
   if (!r || r.watched !== false) continue;
   n += 1;
   rows.push(

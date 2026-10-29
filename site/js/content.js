@@ -358,7 +358,7 @@ export const drills = {
     title: 'Pass the Rock',
     resource: 'pass-the-rock',
     why: 'Quick, accurate passes move the defence and find the open player. The ball moves faster than anyone can run.',
-    teaches: 'Catching and passing quickly and accurately with a partner.',
+    teaches: 'Catching and passing quickly and accurately.',
     cues: ['Step to your target', 'Hands up and ready', 'Catch with two hands'],
     doIt: 'Pass back and forth for 30 seconds and count your passes. Try to beat that number.',
     level: 'Beginner',
@@ -370,7 +370,7 @@ export const drills = {
     title: 'Pass and Follow',
     resource: 'pass-and-follow',
     why: 'Moving after you pass keeps the offence flowing and gets you ready for the next pass.',
-    teaches: 'Passing, then moving, as part of a group.',
+    teaches: 'Passing, then following your pass.',
     cues: ['Pass with a step', 'Hands up as a target', 'Move after you pass'],
     doIt: 'In groups of four to six, keep the ball moving for 2 minutes without dropping it.',
     level: 'Beginner',
@@ -379,10 +379,10 @@ export const drills = {
     needs: ['Ball', 'Group of 4 to 6']
   },
   'two-ball-passing': {
-    title: 'Two-Ball Passing ("The Machine")',
+    title: 'Two-Ball Passing',
     resource: 'two-ball-passing',
     why: 'Handling two passes at once builds quick hands and focus, which helps when a pass comes at you fast.',
-    teaches: 'Passing and catching two balls at once with a partner, in rhythm.',
+    teaches: 'Passing with two balls.',
     cues: ['Eyes on your partner', 'Soft hands', 'Keep a steady rhythm'],
     doIt: 'Start with one ball. When it feels easy, add the second. Do 3 rounds of 30 seconds.',
     level: 'Intermediate',
@@ -417,10 +417,10 @@ export const drills = {
     needs: ['Ball', 'Flat floor']
   },
   'pivot-jab-pump-fake': {
-    title: 'Pivot, Jab and Pump Fake',
+    title: 'Footwork Drill',
     resource: 'pivot-jab-pump-fake',
     why: 'A jab step and a pump fake can move a defender off balance, which gives you a cleaner shot or pass.',
-    teaches: 'Putting a pivot, a jab step and a pump fake together.',
+    teaches: 'Footwork with the ball (check when watching).',
     cues: ['Pivot foot stays planted', 'Short, sharp jab', 'Sell the fake'],
     doIt: 'Do 8 reps on each side. Then add a partner as a defender.',
     level: 'Intermediate',
@@ -443,10 +443,10 @@ export const drills = {
     needs: ['Partner', 'Open space']
   },
   'lateral-push': {
-    title: 'Side Push Slides',
+    title: 'Side/Lateral Push Drill',
     resource: 'lateral-push',
     why: 'A strong push off your back foot helps you get to your spot first and cover more ground when you slide.',
-    teaches: 'Covering more ground with each defensive slide.',
+    teaches: 'Covering more ground on defensive slides.',
     cues: ['Push off the back foot', 'Stay low', 'Do not cross your feet'],
     doIt: 'Slide across the key and back 5 times without standing up.',
     level: 'Beginner',
@@ -455,10 +455,10 @@ export const drills = {
     needs: ['Open space']
   },
   'closing-time': {
-    title: 'Closing Time (Closeouts)',
+    title: 'Closing Time',
     resource: 'closing-time',
     why: 'A good closeout takes away the open shot without letting the ball handler blow past you.',
-    teaches: 'Closing out on a ball handler under control.',
+    teaches: 'Closing out on a ball handler (check when watching).',
     cues: ['Sprint, then short steps', 'Hand up on the shot', 'Stay low and balanced'],
     doIt: 'With a partner, do 10 closeouts each. Swap after 10.',
     level: 'Intermediate',
@@ -481,10 +481,10 @@ export const drills = {
     needs: ['Partner', 'Open space']
   },
   'box-out-at-home': {
-    title: 'Box Out at Home',
+    title: 'Box Out Drill',
     resource: 'box-out-at-home',
     why: 'Every rebound you win ends their turn and gives your team the ball. Boxing out is how you earn them.',
-    teaches: 'Box-out skills you can practise at home.',
+    teaches: 'Boxing out.',
     cues: ['Turn and seal', 'Wide base', 'Hands up'],
     doIt: 'Do 10 box outs, using your body and not your arms.',
     level: 'Beginner',

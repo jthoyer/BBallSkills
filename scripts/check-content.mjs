@@ -56,7 +56,7 @@ for (const [k, r] of Object.entries(resources)) {
   ids.add(r.youtubeId);
   ok(nonEmpty(r.channel && r.channel.name) && nonEmpty(r.channel && r.channel.url), `${k}.channel name and url`);
   ok(/^https:\/\//.test(r.channel && r.channel.url), `${k}.channel.url is https`);
-  ok(r.watched === false, `${k}.watched is false`);
+  ok(typeof r.watched === 'boolean', `${k}.watched is a boolean (got ${JSON.stringify(r.watched)})`);
   ok(['ok', 'removed'].includes(r.status), `${k}.status valid`);
   ok(r.length === null || nonEmpty(r.length), `${k}.length is null or a string`);
   ok(nonEmpty(r.found && r.found.searchTitle), `${k}.found.searchTitle non-empty`);
@@ -106,7 +106,10 @@ const outside = JSON.stringify({ skills, positions });
 for (const k of keys) {
   for (const f of ['why', 'teaches', 'doIt']) ok(!outside.includes(drills[k][f]), `${k}.${f} is not copied into skills/positions`);
 }
-ok(JSON.stringify(zones).includes(drills[keys[0]].why) === false, 'zone text does not copy drill text');
+const zoneText = JSON.stringify(zones);
+for (const k of keys) {
+  for (const f of ['why', 'teaches']) ok(!zoneText.includes(drills[k][f]), `zones does not copy ${k}.${f}`);
+}
 
 // --- AC2 / AC23: forbidden strings in site/
 const FORBIDDEN = ['this week', 'thisweek', 'coach pick', 'localstorage', 'sessionstorage', 'document.cookie', '<form', '<input', '<textarea', 'googletagmanager', 'google-analytics', 'gtag(', 'fonts.googleapis', 'fonts.gstatic'];
@@ -128,7 +131,7 @@ for (const f of ['package.json', 'package-lock.json']) {
   ok(!exists, `no ${f} in the repo root`);
 }
 
-// --- AC17: WATCHLIST.md row count and content
+// --- AC17: WATCHLIST.md has one row per resource with watched === false (zero rows once all are watched)
 const watchlist = readFileSync(join(root, 'WATCHLIST.md'), 'utf8');
 const unwatched = Object.entries(resources).filter(([, r]) => r.watched === false);
 const rows = watchlist.split('\n').filter((l) => /^\|\s*\d+\s*\|/.test(l));

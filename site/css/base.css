@@ -23,6 +23,8 @@ html {
   background: var(--color-bg);
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
+  /* A focused element is never left hidden under the fixed tab bar. */
+  scroll-padding-bottom: calc(var(--tabbar-h) + 16px);
 }
 
 body {

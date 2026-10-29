@@ -136,7 +136,7 @@ export function suggestControl() {
  * empty youtubeId shows "Video no longer available".
  */
 export function videoBlock(resource, label) {
-  if (!resource || resource.status === 'removed' || !resource.youtubeId) {
+  if (!resource || resource.status === 'removed' || !/^[A-Za-z0-9_-]{11}$/.test(resource.youtubeId || '')) {
     return `
       <div class="video video--gone">
         <p class="video__gone">Video no longer available</p>
