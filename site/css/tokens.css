@@ -26,6 +26,10 @@
   /* Dark orange: links, labels, the active tab, chevrons, Clear all. */
   --color-accent-text: #B93C0A;
 
+  /* 30% of the accent over white (255,106,19 at 0.3 on 255,255,255): the fill of
+     an active filter select. Ink text on it is measured by check-contrast. */
+  --color-accent-tint: #FFD2B8;
+
   /* Control borders (need 3:1) */
   --color-border: #7A756D;
 

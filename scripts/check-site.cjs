@@ -529,7 +529,7 @@ const cards = (page) => page.locator('#find-list a.dcard').count();
     ok(JSON.stringify(st.shown) === JSON.stringify(['Ball handling', 'Beginner', 'Just me']), `AC9a: each active select shows its value as visible text (${st.shown})`);
     ok(st.clear && st.clear.sameLine && st.clear.right && st.clear.w >= 44 && st.clear.h >= 44 && st.extraRow === 0, `AC9a: Clear all (>=44x44) sits on the result line, to its right, with no extra row (${JSON.stringify(st.clear)}/${st.extraRow})`);
     ok(st.result.trim() === 'Showing 2 drills' && st.cards === 2, `AC9: result line says 2 drills and 2 cards render (${st.result}/${st.cards})`);
-    ok(st.active.every((a) => a[0] === 'rgb(255, 106, 19)' && a[1] === 'rgb(22, 24, 29)') && idleStyle[0] === 'rgb(255, 255, 255)', `AC9: active selects have an orange fill and ink border; idle is white (${JSON.stringify(st.active)} vs ${idleStyle})`);
+    ok(st.active.every((a) => a[0] === 'rgb(255, 210, 184)' && a[1] === 'rgb(22, 24, 29)') && idleStyle[0] === 'rgb(255, 255, 255)', `AC9: active selects have an light orange tint fill and ink border; idle is white (${JSON.stringify(st.active)} vs ${idleStyle})`);
     ok(st.countEls === 1, `AC9: the count appears in exactly one visible element (${st.countEls})`);
     ok(st.liveInView === 0 && st.liveAll === 1, `AC10/D: #status is the only live region (${st.liveInView}/${st.liveAll})`);
     const log = await page.evaluate(() => window.__log);

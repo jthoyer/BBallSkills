@@ -225,9 +225,9 @@
   cursor: pointer;
 }
 .sel select option { background: var(--color-surface); color: var(--color-text); }
-/* A non-default select: orange fill, heavier ink border, bold; its value is the visible text, so
+/* A non-default select: light orange tint fill, heavier ink border, bold; its value is the visible text, so
    state is never colour alone. */
-.sel select[data-active="true"] { background: var(--color-accent); border-color: var(--color-text); font-weight: 700; }
+.sel select[data-active="true"] { background: var(--color-accent-tint); border-color: var(--color-text); font-weight: 700; }
 
 /* Result line with Clear all on the right. Fixed height so the list does not jump. */
 .resultrow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--tap-min); margin: 0 0 var(--space-2); }

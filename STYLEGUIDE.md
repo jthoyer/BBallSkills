@@ -13,6 +13,7 @@ Style: **light, card-based**. A warm off-white page, white bordered cards, brigh
 | `--color-muted` | #545A66 | Secondary text, labels |
 | `--color-accent` | #FF6A13 | **Fills and the heading rule only**: icon circles, badges, cue numbers, Do it, active select |
 | `--color-on-accent` | #16181D | Text and icons on any orange fill (never white) |
+| `--color-accent-tint` | #FFD2B8 | 30% of the accent over white: fill of an active filter select only |
 | `--color-accent-text` | #B93C0A | Links, labels, active tab, chevrons, Clear all |
 | `--color-border` | #7A756D | Control (select) borders, 3:1 or better |
 | `--color-card-border` | #DDD8D0 | Decorative card outline |
@@ -39,6 +40,7 @@ Produced by `node scripts/check-contrast.mjs`, which reads `tokens.css`, composi
 | on-accent #16181D | accent #FF6A13 | 6.19 | 4.5 | pass | Do it block, active select, icon circles, badges, cue numbers, skip link |
 | white #FFFFFF | pill over white #404246 | 10.07 | 4.5 | pass | Pill and "Play video" label over a white photo (worst case) |
 | white #FFFFFF | pill over thumb #393A3D | 11.37 | 4.5 | pass | Pill and "Play video" label over the placeholder |
+| text #16181D | accent-tint #FFD2B8 | 12.82 | 4.5 | pass | Value text of an active filter select |
 | white #FFFFFF | text #16181D | 17.76 | 4.5 | pass | Show all drills (ink-filled button) |
 | border #7A756D | bg #F7F5F2 | 4.20 | 3 | pass | Select border on the page; unfilled level bars |
 | border #7A756D | surface #FFFFFF | 4.57 | 3 | pass | Select border on a card or the footer |
@@ -48,6 +50,8 @@ Produced by `node scripts/check-contrast.mjs`, which reads `tokens.css`, composi
 | focus #B93C0A | surface #FFFFFF | 5.65 | 3 | pass | Focus ring on cards, the footer and the tab bar |
 | focus #B93C0A | thumb #D9D5CE | 3.87 | 3 | pass | Inset focus ring on the thumbnail when no image has loaded |
 | on-accent #16181D | accent #FF6A13 | 6.19 | 3 | pass | Play triangle and skill icons on orange (graphics) |
+| text #16181D | accent-tint #FFD2B8 | 12.82 | 3 | pass | Active select ink border against its tint fill |
+| focus #B93C0A | accent-tint #FFD2B8 | 4.08 | 3 | pass | Focus ring if it ever touches the tint (it sits outside, on the page) |
 | text #16181D | accent #FF6A13 | 6.19 | 3 | pass | Play-circle ring against the orange circle (graphic) |
 
 Exempt (not measured):
@@ -61,7 +65,7 @@ Exempt (not measured):
 
 Lowest ratio: 3.87 (focus on thumb)
 
-20 pairings, 0 failed
+23 pairings, 0 failed
 
 A second pass over the rendered pages (every visible text node against its composited background, at 390px, on Find idle, Find with filters, the empty state, a drill page with the Suggest note open, Positions, a position, the zone page and Not found) found a text floor of 5.20:1 (dark-orange wordmark and links on the page). The lowest figure anywhere is 3.87:1 (the inset focus ring on the empty thumbnail), then 4.20:1 (select border on the page). The pill over a real photo cannot be measured here: the worst case (a white photo) is 10.07:1.
 
@@ -89,7 +93,7 @@ An orange rule under every h1 and every list-section h2; in-card and drill-page 
 - **Drill card, full** (`ui.js drillCard()`): one link. A 16:9 lazy thumbnail from `i.ytimg.com` (empty alt), a dark pill bottom-left with level bars, the level word and the length (no dangling separator when there is none), then a 44px orange circle with a dark skill icon, the 18px title and "Skill . needs". No resource, or a thumbnail that fails to load, shows a "No preview" placeholder and the card still links.
 - **Drill card, compact** (`drillCard(key, {compact: true})`): 104px thumbnail on the left, title, and "bars Level . length". Used on position pages, zone cards and "More ... drills".
 - **Schedule card** (`ui.js scheduleCard()`): one link with a top meta row (bold left, muted right), a 40px orange badge (number or icon), the 20px name, a bold count and a chevron. Used on Positions, "All six skills" (single row, no meta) and the Zone card. On the zone page the same look holds drill links, so those cards are not links themselves and never nest one.
-- **Filter selects** (`.finder`): three native `<select>`s, Skill, Level, Needs, 48px high, in **one row from 360px up** (Skill on its own row below 360px). There are no visible labels: each select has a visually-hidden `<label for>` for its name, and its first option says what it is ("All skills", "Any level", "Any kit"). Options are derived from `content.js` (Level lists only levels some drill has; Needs only the setups some drill has); the Needs labels are kept short ("Just me", "Partner", "A hoop") so no chosen value is ever cut off. The columns are sized to their longest option. No count appears in any option. A non-default select gets an orange fill, an ink border and bold text, and its value is its visible text. Changing one repaints only the result line, Clear all and list; it never repaints the selects, touches the hash or moves focus. Height budget, h1 rule to first card: 122px measured at 360, 390 and 430 (limits 150 / 140 / 140), idle and with one or three filters set.
+- **Filter selects** (`.finder`): three native `<select>`s, Skill, Level, Needs, 48px high, in **one row from 360px up** (Skill on its own row below 360px). There are no visible labels: each select has a visually-hidden `<label for>` for its name, and its first option says what it is ("All skills", "Any level", "Any kit"). Options are derived from `content.js` (Level lists only levels some drill has; Needs only the setups some drill has); the Needs labels are kept short ("Just me", "Partner", "A hoop") so no chosen value is ever cut off. The columns are sized to their longest option. No count appears in any option. A non-default select gets a light orange tint fill (`--color-accent-tint`), an ink border and bold text, and its value is its visible text. Changing one repaints only the result line, Clear all and list; it never repaints the selects, touches the hash or moves focus. Height budget, h1 rule to first card: 122px measured at 360, 390 and 430 (limits 150 / 140 / 140), idle and with one or three filters set.
 - **Result line**: "Showing N drills" is the only place the count appears on Find. While a filter is active, **Clear all** (44px, dark orange) sits on the right of the same line; there is no summary row. Neither carries `role="status"` or `aria-live`; the single live region is `#status`, which announces the count and active values once per change.
 - **Empty state**: when the filters match nothing, a card headed "No drills match", a reason derived from the content ("Take off Just me to see 1 drill.") and a "Show all drills" ink-filled button. It behaves like Clear all and moves focus to the Skill select. Combinations are never disabled.
 - **Facts card**: level bars and word, length when known, "You need", and "Level graded by us, not by the video makers."

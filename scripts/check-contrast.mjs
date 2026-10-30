@@ -30,7 +30,7 @@ const pillRgb = [pillMatch[1], pillMatch[2], pillMatch[3]].map(Number);
 const pillAlpha = Number(pillMatch[4]);
 const over = (base) => toHex(toRgb(base).map((v, i) => pillAlpha * pillRgb[i] + (1 - pillAlpha) * v));
 
-const need = ['text', 'muted', 'bg', 'surface', 'thumb', 'accent', 'on-accent', 'accent-text', 'border', 'focus', 'white', 'card-border', 'edge'];
+const need = ['text', 'muted', 'bg', 'surface', 'thumb', 'accent', 'on-accent', 'accent-text', 'accent-tint', 'border', 'focus', 'white', 'card-border', 'edge'];
 for (const n of need) if (!tok[n]) { console.error(`missing token ${n}`); process.exit(2); }
 tok['pill over white'] = over(tok.white);
 tok['pill over thumb'] = over(tok.thumb);
@@ -57,6 +57,7 @@ const PAIRS = [
   ['on-accent', 'accent', 4.5, 'Do it block, active select, icon circles, badges, cue numbers, skip link'],
   ['white', 'pill over white', 4.5, 'Pill and "Play video" label over a white photo (worst case)'],
   ['white', 'pill over thumb', 4.5, 'Pill and "Play video" label over the placeholder'],
+  ['text', 'accent-tint', 4.5, 'Value text of an active filter select'],
   ['white', 'text', 4.5, 'Show all drills (ink-filled button)'],
   // Non-text, 3
   ['border', 'bg', 3, 'Select border on the page; unfilled level bars'],
@@ -67,6 +68,8 @@ const PAIRS = [
   ['focus', 'surface', 3, 'Focus ring on cards, the footer and the tab bar'],
   ['focus', 'thumb', 3, 'Inset focus ring on the thumbnail when no image has loaded'],
   ['on-accent', 'accent', 3, 'Play triangle and skill icons on orange (graphics)'],
+  ['text', 'accent-tint', 3, 'Active select ink border against its tint fill'],
+  ['focus', 'accent-tint', 3, 'Focus ring if it ever touches the tint (it sits outside, on the page)'],
   ['text', 'accent', 3, 'Play-circle ring against the orange circle (graphic)'],
 ];
 
