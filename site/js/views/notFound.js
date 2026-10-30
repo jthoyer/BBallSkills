@@ -6,6 +6,6 @@ export function notFoundView(rawHash) {
     html: `
       ${pageHeader({ title: 'Page not found', lead: 'That page does not exist. The link may be out of date.' })}
       ${rawHash ? `<p class="note">Requested address: <code>${esc(rawHash)}</code></p>` : ''}
-      <p><a class="btn" href="#/">Go to Skills</a></p>`
+      <p><a class="btn" href="#/">Go to drills</a></p>`
   };
 }
