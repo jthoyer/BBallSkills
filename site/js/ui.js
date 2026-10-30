@@ -151,7 +151,7 @@ export function scheduleCard({ href, name, badge, badgeIsIcon, left, right, coun
   return `
     <li>
       <a class="sched${left ? '' : ' sched--one'}" href="${esc(href)}">
-        ${left ? `<span class="sched__top"><b>${esc(left)}</b><span>${esc(right)}</span></span>` : ''}
+        ${left ? `<span class="sched__top"><b>${esc(left)}</b> <span>${esc(right)}</span></span>` : ''}
         <span class="sched__main">
           <span class="badge" aria-hidden="true">${badgeIsIcon ? badge : esc(badge)}</span>
           <span class="sched__name">${esc(name)}</span>

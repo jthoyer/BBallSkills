@@ -73,7 +73,7 @@ export function positionView(slug) {
 function zoneCard({ name, left, right, text, drillKeys }) {
   return `
       <li class="sched sched--info">
-        <span class="sched__top"><b>${esc(left)}</b><span>${esc(right)}</span></span>
+        <span class="sched__top"><b>${esc(left)}</b> <span>${esc(right)}</span></span>
         <h3 class="sched__name">${esc(name)}</h3>
         <p>${esc(text)}</p>
         <p class="card__label">Practise it</p>

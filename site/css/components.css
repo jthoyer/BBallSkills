@@ -17,7 +17,6 @@
 .page-head__lead { margin: 0 0 var(--space-4); color: var(--color-muted); font-size: 1rem; text-align: center; }
 
 /* Small caps label: family names, in-card labels, drill-page block labels. No rule. */
-.label,
 .blk h2,
 .group__title,
 .card__label {
@@ -199,7 +198,7 @@
 .sel__box::after {
   content: "";
   position: absolute;
-  right: 14px; top: 50%;
+  right: 11px; top: 50%;
   width: 8px; height: 8px;
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
@@ -212,12 +211,12 @@
   width: 100%;
   min-width: 0;
   min-height: 48px;
-  padding: 0 36px 0 12px;
+  padding: 0 28px 0 10px;
   border: 2px solid var(--color-border);
   border-radius: var(--radius);
   background: var(--color-surface);
   color: var(--color-text);
-  font: 600 0.9375rem / 1.2 var(--font-body);
+  font: 600 0.875rem / 1.2 var(--font-body);
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
@@ -383,7 +382,7 @@
 .group__title { margin-top: var(--space-2); }
 
 /* --- Wider screens ----------------------------------------------------------- */
-@media (min-width: 22em) {
+@media (min-width: 24em) {
   .finder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sel--skill { grid-column: 1 / -1; }
 }
