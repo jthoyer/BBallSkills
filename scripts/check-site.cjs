@@ -887,7 +887,7 @@ const cards = (page) => page.locator('#find-list a.dcard').count();
     await page.keyboard.press('Shift+Tab');
     await page.keyboard.press('Tab');
     const r = await page.evaluate(() => { const e = document.getElementById('f-skill'); const cs = getComputedStyle(e); return { focus: document.activeElement.id, vis: e.matches(':focus-visible'), ow: cs.outlineWidth, off: cs.outlineOffset, oc: cs.outlineColor }; });
-    ok(r.focus === 'f-skill' && r.vis && parseFloat(r.off) >= 2 && parseFloat(r.ow) >= 3 && r.oc === 'rgb(185, 60, 10)', `AC4: the active (orange) select's ring is outside it, 3px dark orange, offset >= 2px (${JSON.stringify(r)})`);
+    ok(r.focus === 'f-skill' && r.vis && parseFloat(r.off) >= 2 && parseFloat(r.ow) >= 3 && r.oc === 'rgb(185, 60, 10)', `AC4: the active (tinted) select's ring is outside it, 3px dark orange, offset >= 2px (${JSON.stringify(r)})`);
     await open(page, '#/drills/form-shooting');
     const d = await page.evaluate(() => { const e = document.querySelector('.doit'); return { focusable: e.querySelectorAll('a,button,[tabindex]').length, bg: getComputedStyle(e).backgroundColor }; });
     ok(d.focusable === 0 && d.bg === 'rgb(255, 106, 19)', `AC4: the Do it block is orange and holds no focusable control (${JSON.stringify(d)})`);

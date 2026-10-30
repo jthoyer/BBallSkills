@@ -11,7 +11,7 @@ Style: **light, card-based**. A warm off-white page, white bordered cards, brigh
 | `--color-thumb` | #D9D5CE | Thumbnail placeholder (decorative) |
 | `--color-text` | #16181D | Body, titles, ink borders, ink-filled button |
 | `--color-muted` | #545A66 | Secondary text, labels |
-| `--color-accent` | #FF6A13 | **Fills and the heading rule only**: icon circles, badges, cue numbers, Do it, active select |
+| `--color-accent` | #FF6A13 | **Fills and the heading rule only**: icon circles, badges, cue numbers, Do it |
 | `--color-on-accent` | #16181D | Text and icons on any orange fill (never white) |
 | `--color-accent-tint` | #FFD2B8 | 30% of the accent over white: fill of an active filter select only |
 | `--color-accent-text` | #B93C0A | Links, labels, active tab, chevrons, Clear all |
@@ -37,7 +37,7 @@ Produced by `node scripts/check-contrast.mjs`, which reads `tokens.css`, composi
 | muted #545A66 | thumb #D9D5CE | 4.74 | 4.5 | pass | "No preview" and "Thumbnail unavailable" labels on the placeholder |
 | accent-text #B93C0A | bg #F7F5F2 | 5.20 | 4.5 | pass | Links, back link, labels, wordmark, Clear all |
 | accent-text #B93C0A | surface #FFFFFF | 5.65 | 4.5 | pass | Chevrons, active tab, labels inside cards |
-| on-accent #16181D | accent #FF6A13 | 6.19 | 4.5 | pass | Do it block, active select, icon circles, badges, cue numbers, skip link |
+| on-accent #16181D | accent #FF6A13 | 6.19 | 4.5 | pass | Do it block, icon circles, badges, cue numbers, skip link |
 | white #FFFFFF | pill over white #404246 | 10.07 | 4.5 | pass | Pill and "Play video" label over a white photo (worst case) |
 | white #FFFFFF | pill over thumb #393A3D | 11.37 | 4.5 | pass | Pill and "Play video" label over the placeholder |
 | text #16181D | accent-tint #FFD2B8 | 12.82 | 4.5 | pass | Value text of an active filter select |

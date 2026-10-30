@@ -54,7 +54,7 @@ const PAIRS = [
   ['muted', 'thumb', 4.5, '"No preview" and "Thumbnail unavailable" labels on the placeholder'],
   ['accent-text', 'bg', 4.5, 'Links, back link, labels, wordmark, Clear all'],
   ['accent-text', 'surface', 4.5, 'Chevrons, active tab, labels inside cards'],
-  ['on-accent', 'accent', 4.5, 'Do it block, active select, icon circles, badges, cue numbers, skip link'],
+  ['on-accent', 'accent', 4.5, 'Do it block, icon circles, badges, cue numbers, skip link'],
   ['white', 'pill over white', 4.5, 'Pill and "Play video" label over a white photo (worst case)'],
   ['white', 'pill over thumb', 4.5, 'Pill and "Play video" label over the placeholder'],
   ['text', 'accent-tint', 4.5, 'Value text of an active filter select'],
