@@ -119,7 +119,7 @@ const PROBE = {
   },
   logStart: () => {
     window.__log = [];
-    new MutationObserver(() => window.__log.push(document.getElementById('status').textContent))
+    new MutationObserver((records) => records.forEach(() => window.__log.push(document.getElementById('status').textContent)))
       .observe(document.getElementById('status'), { childList: true, characterData: true, subtree: true });
   }
 };
