@@ -70,23 +70,25 @@ const PROBE = {
     return { clipped, ellipsis, clamp };
   },
   overflow: () => [document.documentElement.scrollWidth, document.documentElement.clientWidth, document.body.scrollWidth],
-  // AC13 select fit: every option measured in the select's own computed font.
-  selectFit: (limit) => {
-    const bad = [];
-    for (const sel of document.querySelectorAll('select')) {
-      const cs = getComputedStyle(sel);
-      const inner = sel.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      const probe = document.createElement('span');
-      probe.style.cssText = `position:absolute;visibility:hidden;white-space:nowrap;font:${cs.font};letter-spacing:${cs.letterSpacing}`;
-      document.body.appendChild(probe);
-      for (const o of sel.options) {
-        probe.textContent = o.text;
-        const w = probe.getBoundingClientRect().width;
-        if (w > inner * limit) bad.push(`${sel.id} "${o.text}" ${w.toFixed(1)} > ${(inner * limit).toFixed(1)}`);
-      }
-      probe.remove();
-    }
-    return bad;
+  // AC13a: the displayed value of one select, measured in its own computed font
+  // (bold when active). Returns the text width and the width available for it.
+  selectText: (id) => {
+    const sel = document.getElementById(id);
+    const cs = getComputedStyle(sel);
+    const inner = sel.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const probe = document.createElement('span');
+    probe.style.cssText = `position:absolute;visibility:hidden;white-space:nowrap;font:${cs.font};letter-spacing:${cs.letterSpacing}`;
+    document.body.appendChild(probe);
+    probe.textContent = sel.options[sel.selectedIndex].text;
+    const w = probe.getBoundingClientRect().width;
+    probe.remove();
+    return { w, inner, text: sel.options[sel.selectedIndex].text, ellipsis: cs.textOverflow === 'ellipsis' };
+  },
+  // AC31: gap from the bottom of the h1 rule to the top of the first card.
+  filterBlock: () => {
+    const h = document.querySelector('h1').getBoundingClientRect();
+    const c = document.querySelector('#find-list a.dcard');
+    return c ? Math.round(c.getBoundingClientRect().top - h.bottom) : null;
   },
   headings: () => [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map((h) => Number(h.tagName[1])),
   footer: () => {
@@ -242,15 +244,54 @@ const cards = (page) => page.locator('#find-list a.dcard').count();
       ok(c.ellipsis.length === 0 && c.clamp.length === 0, `AC13 ${tag}: no ellipsis or line clamp (${c.ellipsis.length}/${c.clamp.length})`);
       await s.context.close();
     }
-    // Select fit, idle and with all three active (bold), at this width.
-    for (const filt of [null, STATES[0][1]]) {
-      const s = await fresh(browser, { width });
-      await open(s.page, '#/');
-      if (filt) await setFilters(s.page, filt);
-      const bad = await s.page.evaluate(PROBE.selectFit, width === 320 ? 0.8 : 1);
-      ok(bad.length === 0, `AC13 select fit @${width}${filt ? ' (all active)' : ''}: every option fits (${bad.join('; ')})`);
-      await s.context.close();
+  }
+
+  // ---- AC13a: no select's displayed value is cut off, for every option of every select, at six widths.
+  // ---- AC31: height budget of the filter block (h1 rule to first card).
+  const HEIGHTS = {};
+  const BUDGET = { 360: 150, 390: 140, 430: 140 };
+  const ONE = [['skill', 'shooting'], ['level', 'Intermediate'], ['setup', 'partner']];
+  for (const width of [320, 360, 390, 430, 768, 1280]) {
+    const s = await fresh(browser, { width });
+    const { page } = s;
+    await open(page, '#/');
+    const bad = [];
+    for (const id of ['f-skill', 'f-level', 'f-setup']) {
+      const values = await page.evaluate((i) => [...document.getElementById(i).options].map((o) => o.value), id);
+      for (const v of values) {
+        await page.selectOption('#' + id, v);
+        const m = await page.evaluate(PROBE.selectText, id);
+        const limit = width === 320 ? 0.8 : 1;
+        if (m.w > m.inner * limit || m.ellipsis) bad.push(`${id} "${m.text}" ${m.w.toFixed(1)} > ${(m.inner * limit).toFixed(1)}`);
+      }
+      await page.selectOption('#' + id, '');
     }
+    ok(bad.length === 0, `AC13a @${width}: every option of every select shows in full (${bad.join('; ')})`);
+    await s.context.close();
+    if (!BUDGET[width] && width !== 320) continue;
+    const res = {};
+    for (const [label, filt] of [['idle', {}], ...ONE.map(([k, v]) => [`1:${k}`, { [k]: v }]), ['3', { skill: 'ball-handling', level: 'Beginner', setup: 'solo' }]]) {
+      const t = await fresh(browser, { width });
+      await open(t.page, '#/');
+      await setFilters(t.page, filt);
+      res[label] = await t.page.evaluate(PROBE.filterBlock);
+      const o = await t.page.evaluate(PROBE.overflow);
+      ok(o[0] <= o[1], `AC14 filter block @${width} ${label}: no horizontal overflow`);
+      if (BUDGET[width]) ok(res[label] !== null && res[label] <= BUDGET[width], `AC31 @${width} ${label}: filter block ${res[label]}px <= ${BUDGET[width]}px`);
+      await t.context.close();
+    }
+    HEIGHTS[width] = res;
+  }
+  console.log('Filter block heights (h1 rule to first card):', JSON.stringify(HEIGHTS));
+
+  // AC8a: one row from 360px up; Skill on its own row below.
+  for (const width of [320, 360, 390, 430, 768, 1280]) {
+    const s = await fresh(browser, { width });
+    await open(s.page, '#/');
+    const tops = await s.page.evaluate(() => ['f-skill', 'f-level', 'f-setup'].map((i) => Math.round(document.getElementById(i).getBoundingClientRect().top)));
+    const oneRow = tops.every((t) => t === tops[0]);
+    ok(width >= 360 ? oneRow : !oneRow, `AC8a @${width}: ${width >= 360 ? 'the three selects share one row' : 'Skill wraps above Level and Needs'} (${tops})`);
+    await s.context.close();
   }
 
   // ---- Keyboard pass, focus ring, skip link, tap size, footer (390 and 1280)
@@ -426,19 +467,19 @@ const cards = (page) => page.locator('#find-list a.dcard').count();
     await open(page, '#/');
     const sel = await page.evaluate(() => [...document.querySelectorAll('select')].map((e) => ({
       id: e.id, label: document.querySelector(`label[for="${e.id}"]`) && document.querySelector(`label[for="${e.id}"]`).textContent,
-      labelVisible: !!document.querySelector(`label[for="${e.id}"]`) && document.querySelector(`label[for="${e.id}"]`).getClientRects().length > 0,
+      labelHidden: !!document.querySelector(`label.visually-hidden[for="${e.id}"]`), labelOnScreen: [...document.querySelectorAll('#view label')].some((l) => !l.classList.contains('visually-hidden') && l.getClientRects().length),
       options: [...e.options].map((o) => o.text), inForm: !!e.closest('form') })));
     ok(sel.length === 3, `AC8: exactly three selects (${sel.length})`);
-    ok(JSON.stringify(sel.map((x) => x.label)) === JSON.stringify(['Skill', 'Level', 'Needs']) && sel.every((x) => x.labelVisible), `AC8: visible labels Skill, Level, Needs (${sel.map((x) => x.label)})`);
+    ok(JSON.stringify(sel.map((x) => x.label)) === JSON.stringify(['Skill', 'Level', 'Needs']) && sel.every((x) => x.labelHidden && !x.labelOnScreen), `AC8a: each select has a visually-hidden <label for> Skill, Level, Needs and no label shows on screen (${sel.map((x) => x.label)})`);
     ok(JSON.stringify(sel[0].options) === JSON.stringify(['All skills', ...CONTENT.skillNames]), `AC8: Skill options (${sel[0].options})`);
     ok(JSON.stringify(sel[1].options) === JSON.stringify(['Any level', 'Beginner', 'Intermediate']), `AC8: Level options today (${sel[1].options})`);
     ok(JSON.stringify(sel[1].options) === JSON.stringify(['Any level', ...CONTENT.levels]), `AC8: Level options derived (${sel[1].options})`);
-    ok(JSON.stringify(sel[2].options) === JSON.stringify(['Any', 'Just me', 'Partner or group', 'A hoop']), `AC8: Needs options (${sel[2].options})`);
+    ok(JSON.stringify(sel[2].options) === JSON.stringify(['Any kit', 'Just me', 'Partner', 'A hoop']), `AC8: Needs options (${sel[2].options})`);
     ok(sel.every((x) => x.options.every((o) => !/\d/.test(o)) ) , 'AC8: no option text has a digit');
     ok(sel.every((x) => !x.inForm), 'AC26: no select inside a form');
     // AC9 idle
     ok((await page.textContent('#find-result')).trim() === 'Showing 18 drills', 'AC9: idle result line "Showing 18 drills"');
-    ok(await page.locator('#find-summary').innerHTML() === '' && await page.locator('[data-action="clear"]').count() === 0, 'AC9: idle -> no summary row, no Clear all');
+    ok(await page.locator('[data-action="clear"]').count() === 0 && !/Filtered by/.test(await page.textContent('#view')), 'AC9a: idle -> no Clear all');
     await s.context.close();
   }
   {
@@ -458,7 +499,7 @@ const cards = (page) => page.locator('#find-list a.dcard').count();
     const { page } = s;
     await open(page, '#/');
     await page.evaluate(PROBE.logStart);
-    await page.evaluate(() => { window.__marks = ['.finder', '#find-result', '#find-summary', '#find-list', 'h1'].map((q) => { const e = document.querySelector(q); e.__m = 1; return q; }); document.getElementById('f-skill').__m = 1; document.getElementById('f-level').__m = 1; document.getElementById('f-setup').__m = 1; });
+    await page.evaluate(() => { window.__marks = ['.finder', '#find-result', '#find-clear', '#find-list', 'h1'].map((q) => { const e = document.querySelector(q); e.__m = 1; return q; }); document.getElementById('f-skill').__m = 1; document.getElementById('f-level').__m = 1; document.getElementById('f-setup').__m = 1; });
     const hash0 = await page.evaluate(() => location.hash);
     const idleStyle = await page.evaluate(() => { const c = getComputedStyle(document.getElementById('f-level')); return [c.backgroundColor, c.borderTopColor]; });
     const steps = [['#f-skill', 'ball-handling'], ['#f-level', 'Beginner'], ['#f-setup', 'solo']];
@@ -472,9 +513,11 @@ const cards = (page) => page.locator('#find-list a.dcard').count();
       ok(st.ls === 0 && st.ck === '', `AC10 ${q}: nothing stored`);
     }
     const st = await page.evaluate(() => ({
-      marks: ['.finder', 'h1', '#find-result', '#find-summary', '#find-list'].map((q) => !!document.querySelector(q).__m),
+      marks: ['.finder', 'h1', '#find-result', '#find-clear', '#find-list'].map((q) => !!document.querySelector(q).__m),
       selMarks: ['f-skill', 'f-level', 'f-setup'].map((i) => !!document.getElementById(i).__m),
-      summary: document.getElementById('find-summary').textContent,
+      shown: ['f-skill', 'f-level', 'f-setup'].map((i) => { const e = document.getElementById(i); return e.options[e.selectedIndex].text; }),
+      clear: (() => { const b = document.querySelector('[data-action="clear"]'); const r = document.getElementById('find-result'); if (!b) return null; const a = b.getBoundingClientRect(), c = r.getBoundingClientRect(); return { sameLine: Math.abs((a.top + a.height / 2) - (c.top + c.height / 2)) < 6, right: a.left > c.right, w: a.width, h: a.height }; })(),
+      extraRow: document.querySelectorAll('.sumrow, #find-summary').length,
       result: document.getElementById('find-result').textContent,
       cards: document.querySelectorAll('#find-list a.dcard').length,
       active: ['f-skill', 'f-level', 'f-setup'].map((i) => { const c = getComputedStyle(document.getElementById(i)); return [c.backgroundColor, c.borderTopColor]; }),
@@ -482,8 +525,9 @@ const cards = (page) => page.locator('#find-list a.dcard').count();
       liveInView: document.querySelectorAll('#view [role="status"], #view [aria-live], #view [role="alert"]').length,
       liveAll: document.querySelectorAll('[role="status"], [aria-live]').length,
     }));
-    ok(st.selMarks.every(Boolean) && st.marks.every(Boolean), `AC10: selects, h1 and their wrappers are the same nodes after three changes (${st.selMarks}/${st.marks}) -> only list, result and summary repainted`);
-    ok(/Ball handling/.test(st.summary) && /Beginner/.test(st.summary) && /Just me/.test(st.summary), `AC9: summary names all three (${st.summary})`);
+    ok(st.selMarks.every(Boolean) && st.marks.every(Boolean), `AC10: selects, h1 and their wrappers are the same nodes after three changes (${st.selMarks}/${st.marks}) -> only list, result and Clear all repainted`);
+    ok(JSON.stringify(st.shown) === JSON.stringify(['Ball handling', 'Beginner', 'Just me']), `AC9a: each active select shows its value as visible text (${st.shown})`);
+    ok(st.clear && st.clear.sameLine && st.clear.right && st.clear.w >= 44 && st.clear.h >= 44 && st.extraRow === 0, `AC9a: Clear all (>=44x44) sits on the result line, to its right, with no extra row (${JSON.stringify(st.clear)}/${st.extraRow})`);
     ok(st.result.trim() === 'Showing 2 drills' && st.cards === 2, `AC9: result line says 2 drills and 2 cards render (${st.result}/${st.cards})`);
     ok(st.active.every((a) => a[0] === 'rgb(255, 106, 19)' && a[1] === 'rgb(22, 24, 29)') && idleStyle[0] === 'rgb(255, 255, 255)', `AC9: active selects have an orange fill and ink border; idle is white (${JSON.stringify(st.active)} vs ${idleStyle})`);
     ok(st.countEls === 1, `AC9: the count appears in exactly one visible element (${st.countEls})`);
@@ -516,8 +560,8 @@ const cards = (page) => page.locator('#find-list a.dcard').count();
     const box = await page.locator('[data-action="clear"]').first().boundingBox();
     ok(box.width >= 44 && box.height >= 44, `AC11: Clear all is at least 44x44 (${box.width}x${box.height})`);
     await page.click('[data-action="clear"]');
-    const st = await page.evaluate(() => ({ vals: ['f-skill', 'f-level', 'f-setup'].map((i) => document.getElementById(i).selectedIndex), cards: document.querySelectorAll('#find-list a.dcard').length, focus: document.activeElement.id, log: window.__log.length, summary: document.getElementById('find-summary').innerHTML, active: document.querySelectorAll('select[data-active]').length }));
-    ok(JSON.stringify(st.vals) === '[0,0,0]' && st.cards === 18 && st.summary === '' && st.active === 0, `AC11: Clear all resets all three, shows 18 cards (${JSON.stringify(st)})`);
+    const st = await page.evaluate(() => ({ vals: ['f-skill', 'f-level', 'f-setup'].map((i) => document.getElementById(i).selectedIndex), cards: document.querySelectorAll('#find-list a.dcard').length, focus: document.activeElement.id, log: window.__log.length, clearGone: !document.querySelector('[data-action="clear"]'), active: document.querySelectorAll('select[data-active]').length }));
+    ok(JSON.stringify(st.vals) === '[0,0,0]' && st.cards === 18 && st.clearGone && st.active === 0, `AC11: Clear all resets all three, shows 18 cards (${JSON.stringify(st)})`);
     ok(st.focus === 'f-skill', `AC11: focus moves to the Skill select (${st.focus})`);
     ok(st.log === 1, `AC11: Clear all announces once (${st.log})`);
     await s.context.close();

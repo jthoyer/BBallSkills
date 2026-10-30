@@ -37,7 +37,7 @@ export const LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
  */
 export const SETUPS = [
   { key: 'solo', label: 'Just me' },
-  { key: 'partner', label: 'Partner or group' },
+  { key: 'partner', label: 'Partner' },
   { key: 'hoop', label: 'A hoop' }
 ];
 

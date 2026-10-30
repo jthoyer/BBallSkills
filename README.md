@@ -38,7 +38,7 @@ All content is in `site/js/content.js`. Nothing else holds drill text.
 
 - `resources`: the videos (one per drill).
 - `drills`: keyed by slug. Each has `title`, `resource`, `why`, `teaches`, `cues` (1 to 3), `doIt`, `level`, `group`, `positions`, `needs`, `setup`.
-- `setup`: what the Needs filter matches. A non-empty list from `solo`, `partner`, `hoop`, shown as "Just me", "Partner or group" and "A hoop" (the labels are `SETUPS` in `content.js`). **"Just me" means alone, with no hoop.** A drill that needs a hoop is `hoop` only. A drill that needs a partner or group is `partner` and never `solo`. A drill with an optional partner ("Partner (optional)") is both `solo` and `partner`. The check script enforces these rules against `needs`.
+- `setup`: what the Needs filter matches. A non-empty list from `solo`, `partner`, `hoop`, shown as "Just me", "Partner" and "A hoop" (the labels are `SETUPS` in `content.js`). **"Just me" means alone, with no hoop.** A drill that needs a hoop is `hoop` only. A drill that needs a partner or group is `partner` and never `solo`. A drill with an optional partner ("Partner (optional)") is both `solo` and `partner`. The check script enforces these rules against `needs`.
 - `skills`, `positions`, `zones['2-3']`: lists of drill **keys** only. Never paste drill text into them.
 - `config.suggestFormUrl`: the Suggest a drill form. Leave `''` and the button explains how to suggest instead. Set an https URL and it becomes an external link.
 

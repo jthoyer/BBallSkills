@@ -47,7 +47,7 @@ const ratio = (a, b) => {
 // [foreground token, background token, need, where it is used]
 const PAIRS = [
   // Text, 4.5
-  ['text', 'bg', 4.5, 'Body text, page titles, summary values'],
+  ['text', 'bg', 4.5, 'Body text, page titles, result line values'],
   ['text', 'surface', 4.5, 'Card titles, cues, facts, select text, footer safety line, outline buttons'],
   ['muted', 'bg', 4.5, 'Lead text, result line, select labels, credit line'],
   ['muted', 'surface', 4.5, 'Card meta, inactive tab, footer text, facts labels'],

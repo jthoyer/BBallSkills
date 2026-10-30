@@ -36,7 +36,7 @@ export function filterOptions() {
     },
     setup: {
       label: 'Needs',
-      any: 'Any',
+      any: 'Any kit',
       items: SETUPS.filter((s) => keys.some((k) => drills[k].setup.includes(s.key))).map((s) => ({ value: s.key, label: s.label }))
     }
   };
@@ -58,7 +58,7 @@ function selectHtml(name, opt) {
     .join('');
   return `
     <div class="sel sel--${name}">
-      <label for="${FIELD[name]}">${esc(opt.label)}</label>
+      <label class="visually-hidden" for="${FIELD[name]}">${esc(opt.label)}</label>
       <div class="sel__box">
         <select id="${FIELD[name]}" data-filter="${name}"${filters[name] ? ' data-active="true"' : ''}>${options}</select>
       </div>
@@ -70,15 +70,10 @@ export function resultLine() {
   return `Showing ${plural(matching().length)}`;
 }
 
-/** Summary row: names every active value plus Clear all. Empty when nothing is active. */
-export function summaryHtml() {
-  const names = activeNames();
-  if (!names.length) return '';
-  return `
-    <div class="sumrow">
-      <p class="sumrow__t">Filtered by <b>${esc(names.join(' · '))}</b></p>
-      <button class="clear" type="button" data-action="clear">Clear all<span class="visually-hidden"> filters</span></button>
-    </div>`;
+/** Clear all, on the result line. Absent while every filter is at "any". */
+export function clearHtml() {
+  if (!activeNames().length) return '';
+  return '<button class="clear" type="button" data-action="clear">Clear all<span class="visually-hidden"> filters</span></button>';
 }
 
 /** Why a combination is empty: each active value whose removal alone gives results. */
@@ -108,11 +103,11 @@ export function listHtml() {
     </div>`;
 }
 
-/** Repaint only the result line, summary row and list. The selects are never touched. */
+/** Repaint only the result line, Clear all and list. The selects are never touched. */
 export function paintFind() {
   const set = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
   set('find-result', esc(resultLine()));
-  set('find-summary', summaryHtml());
+  set('find-clear', clearHtml());
   set('find-list', listHtml());
 }
 
@@ -161,8 +156,10 @@ export function findView(slug) {
         ${selectHtml('level', opts.level)}
         ${selectHtml('setup', opts.setup)}
       </div>
-      <p class="result" id="find-result">${esc(resultLine())}</p>
-      <div id="find-summary">${summaryHtml()}</div>
+      <div class="resultrow">
+        <p class="result" id="find-result">${esc(resultLine())}</p>
+        <div id="find-clear">${clearHtml()}</div>
+      </div>
       <div id="find-list">${listHtml()}</div>`
   };
 }

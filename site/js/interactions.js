@@ -6,7 +6,7 @@
  * document because the footer's Suggest button lives outside #view.
  *
  * None of these actions repaint a whole view or touch the hash. A select
- * change repaints only the result line, summary row and list, so focus stays
+ * change repaints only the result line, Clear all and list, so focus stays
  * on the select.
  */
 

@@ -61,6 +61,8 @@ for (const k of keys) {
     ok(setup.includes('partner') && !setup.includes('solo'), `${k}: needs a partner or group, so setup has partner and not solo`);
   }
   ok(!(setup.includes('solo') && setup.includes('hoop')), `${k}: setup never has solo and hoop together`);
+  // The positive side: nothing in `needs` asks for a partner, group or hoop, so the drill is doable alone.
+  if (!needsPartner && !hasHoop) ok(setup.includes('solo'), `${k}: needs no partner, group or hoop, so setup must include solo`);
 }
 
 // --- AC16: resources

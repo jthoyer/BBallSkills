@@ -190,16 +190,19 @@
 .bullets { margin: 0 0 var(--space-3) var(--space-5); }
 .bullets li { margin-bottom: var(--space-1); }
 
-/* --- Find: three selects, result line, summary row, empty state ------------- */
-.finder { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); margin: 0 0 var(--space-3); }
+/* --- Find: three selects, result line, empty state ------------- */
+/* One row from 360px: the three selects share the width in proportion to their
+   longest option, so no chosen value is ever cut off. Below 360px Skill takes
+   its own row. Labels are visually hidden (each select keeps a real label). */
+.finder { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: 0 0 var(--space-2); }
+.sel--skill { grid-column: 1 / -1; }
 .sel { min-width: 0; }
-.sel label { display: block; margin: 0 0 var(--space-1); font: 700 var(--text-small) / 1.2 var(--font-body); color: var(--color-muted); }
 .sel__box { position: relative; }
 .sel__box::after {
   content: "";
   position: absolute;
-  right: 11px; top: 50%;
-  width: 8px; height: 8px;
+  right: 6px; top: 50%;
+  width: 7px; height: 7px;
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: translateY(-70%) rotate(45deg);
@@ -211,7 +214,7 @@
   width: 100%;
   min-width: 0;
   min-height: 48px;
-  padding: 0 28px 0 10px;
+  padding: 0 16px 0 5px;
   border: 2px solid var(--color-border);
   border-radius: var(--radius);
   background: var(--color-surface);
@@ -222,14 +225,13 @@
   cursor: pointer;
 }
 .sel select option { background: var(--color-surface); color: var(--color-text); }
-/* A non-default select: orange fill, heavier ink border, bold. The summary row
-   names it too, so state is never colour alone. */
+/* A non-default select: orange fill, heavier ink border, bold; its value is the visible text, so
+   state is never colour alone. */
 .sel select[data-active="true"] { background: var(--color-accent); border-color: var(--color-text); font-weight: 700; }
 
-.result { margin: 0 0 var(--space-2); font-size: 0.9375rem; color: var(--color-muted); }
-.sumrow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 48px; margin: 0 0 var(--space-2); }
-.sumrow__t { flex: 1; min-width: 0; margin: 0; font-size: var(--text-small); line-height: 1.3; color: var(--color-muted); }
-.sumrow__t b { display: block; font-size: 0.9375rem; font-weight: 700; color: var(--color-text); overflow-wrap: anywhere; }
+/* Result line with Clear all on the right. Fixed height so the list does not jump. */
+.resultrow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--tap-min); margin: 0 0 var(--space-2); }
+.result { margin: 0; font-size: 0.9375rem; color: var(--color-muted); }
 .clear {
   flex: none;
   min-width: var(--tap-min);
@@ -382,16 +384,14 @@
 .group__title { margin-top: var(--space-2); }
 
 /* --- Wider screens ----------------------------------------------------------- */
-@media (min-width: 24em) {
-  .finder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .sel--skill { grid-column: 1 / -1; }
+@media (min-width: 22.5em) {
+  .finder { grid-template-columns: minmax(0, 1.42fr) minmax(0, 1.41fr) minmax(0, 1fr); }
+  .sel--skill { grid-column: auto; }
 }
 @media (min-width: 48em) {
   .app-main { padding-left: var(--space-5); padding-right: var(--space-5); }
   .app-bar { padding-left: var(--space-5); padding-right: var(--space-5); }
   .site-foot { width: calc(100% - 2 * var(--space-5)); max-width: calc(var(--content-max) - 2 * var(--space-5)); }
-  .finder { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .sel--skill { grid-column: auto; }
   .list--cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .page-title, .rule { font-size: 2rem; }
   .rule--2 { font-size: var(--text-h2); }
