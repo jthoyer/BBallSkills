@@ -7,6 +7,7 @@
  *  - A drill's text lives ONLY in `drills`. `skills`, `positions` and
  *    `zones` hold drill KEYS (strings), never copies of text.
  *  - `drills[k].group` must agree with `skills[].drills`.
+ *  - `drills[k].setup` is a non-empty list of SETUPS keys that agrees with `needs`.
  *  - `drills[k].positions` must agree with `positions[].drills` and with the
  *    drill keys used anywhere in `zones['2-3']` (the value 'zone').
  *
@@ -28,6 +29,17 @@ export const config = {
 };
 
 export const LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
+
+/**
+ * What a drill needs, as filter values, in display order. `drills[k].setup`
+ * holds these keys. "Just me" means alone and with no hoop. A drill with an
+ * optional partner lists both `solo` and `partner`.
+ */
+export const SETUPS = [
+  { key: 'solo', label: 'Just me' },
+  { key: 'partner', label: 'Partner or group' },
+  { key: 'hoop', label: 'A hoop' }
+];
 
 const JR_NBA = {
   name: 'Jr. NBA',
@@ -289,7 +301,8 @@ export const drills = {
     level: 'Beginner',
     group: 'ball-handling',
     positions: ['point-guard', 'shooting-guard'],
-    needs: ['Ball', 'Flat floor']
+    needs: ['Ball', 'Flat floor'],
+    setup: ['solo']
   },
   'under-leg-dribble': {
     title: 'Stationary Under-the-Leg Dribble',
@@ -301,7 +314,8 @@ export const drills = {
     level: 'Beginner',
     group: 'ball-handling',
     positions: ['point-guard', 'shooting-guard', 'small-forward'],
-    needs: ['Ball', 'Flat floor']
+    needs: ['Ball', 'Flat floor'],
+    setup: ['solo']
   },
   'scissors-dribble': {
     title: 'Scissors Dribble',
@@ -313,7 +327,8 @@ export const drills = {
     level: 'Intermediate',
     group: 'ball-handling',
     positions: ['point-guard', 'shooting-guard'],
-    needs: ['Ball', 'Space to move']
+    needs: ['Ball', 'Space to move'],
+    setup: ['solo']
   },
 
   /* ---------------- Shooting ---------------- */
@@ -327,7 +342,8 @@ export const drills = {
     level: 'Beginner',
     group: 'shooting',
     positions: ['shooting-guard', 'small-forward'],
-    needs: ['Ball', 'Small space']
+    needs: ['Ball', 'Small space'],
+    setup: ['solo']
   },
   'form-shooting': {
     title: 'Form Shooting',
@@ -339,7 +355,8 @@ export const drills = {
     level: 'Beginner',
     group: 'shooting',
     positions: ['shooting-guard', 'small-forward'],
-    needs: ['Ball', 'Floor to lie on']
+    needs: ['Ball', 'Floor to lie on'],
+    setup: ['solo']
   },
   'jump-stop-shooting': {
     title: 'Jump Stop Shooting',
@@ -351,7 +368,8 @@ export const drills = {
     level: 'Intermediate',
     group: 'shooting',
     positions: ['shooting-guard', 'small-forward'],
-    needs: ['Ball', 'Hoop']
+    needs: ['Ball', 'Hoop'],
+    setup: ['hoop']
   },
 
   /* ---------------- Passing ---------------- */
@@ -365,7 +383,8 @@ export const drills = {
     level: 'Beginner',
     group: 'passing',
     positions: ['point-guard'],
-    needs: ['Ball', 'Group']
+    needs: ['Ball', 'Group'],
+    setup: ['partner']
   },
   'pass-and-follow': {
     title: 'Pass and Follow',
@@ -377,7 +396,8 @@ export const drills = {
     level: 'Beginner',
     group: 'passing',
     positions: ['point-guard'],
-    needs: ['Ball', 'Group']
+    needs: ['Ball', 'Group'],
+    setup: ['partner']
   },
   'two-ball-passing': {
     title: 'Two-Ball Passing',
@@ -389,7 +409,8 @@ export const drills = {
     level: 'Intermediate',
     group: 'passing',
     positions: ['point-guard', 'shooting-guard'],
-    needs: ['Two balls', 'Partner']
+    needs: ['Two balls', 'Partner'],
+    setup: ['partner']
   },
 
   /* ---------------- Footwork ---------------- */
@@ -403,7 +424,8 @@ export const drills = {
     level: 'Beginner',
     group: 'footwork',
     positions: ['power-forward', 'centre'],
-    needs: ['Ball', 'Flat floor']
+    needs: ['Ball', 'Flat floor'],
+    setup: ['solo']
   },
   'reverse-pivot': {
     title: 'Reverse Pivot',
@@ -415,7 +437,8 @@ export const drills = {
     level: 'Beginner',
     group: 'footwork',
     positions: ['power-forward', 'centre'],
-    needs: ['Ball', 'Flat floor']
+    needs: ['Ball', 'Flat floor'],
+    setup: ['solo']
   },
   'pivot-jab-pump-fake': {
     title: 'Jab Step and Pump Fake',
@@ -427,7 +450,8 @@ export const drills = {
     level: 'Intermediate',
     group: 'footwork',
     positions: ['small-forward', 'power-forward'],
-    needs: ['Ball', 'Partner (optional)']
+    needs: ['Ball', 'Partner (optional)'],
+    setup: ['solo', 'partner']
   },
 
   /* ---------------- Defence ---------------- */
@@ -441,7 +465,8 @@ export const drills = {
     level: 'Beginner',
     group: 'defence',
     positions: ['shooting-guard', 'zone'],
-    needs: ['Partner', 'Open space']
+    needs: ['Partner', 'Open space'],
+    setup: ['partner']
   },
   'lateral-push': {
     title: 'Side/Lateral Push Drill',
@@ -453,7 +478,8 @@ export const drills = {
     level: 'Beginner',
     group: 'defence',
     positions: ['small-forward', 'zone'],
-    needs: ['Open space']
+    needs: ['Open space'],
+    setup: ['solo']
   },
   'closing-time': {
     title: 'Closing Time',
@@ -465,7 +491,8 @@ export const drills = {
     level: 'Intermediate',
     group: 'defence',
     positions: ['shooting-guard', 'small-forward', 'zone'],
-    needs: ['Ball', 'Partner']
+    needs: ['Ball', 'Partner'],
+    setup: ['partner']
   },
 
   /* ---------------- Rebounding ---------------- */
@@ -479,7 +506,8 @@ export const drills = {
     level: 'Beginner',
     group: 'rebounding',
     positions: ['power-forward', 'centre', 'zone'],
-    needs: ['Partner', 'Open space']
+    needs: ['Partner', 'Open space'],
+    setup: ['partner']
   },
   'box-out-at-home': {
     title: 'Box Out Drill',
@@ -491,7 +519,8 @@ export const drills = {
     level: 'Beginner',
     group: 'rebounding',
     positions: ['power-forward', 'centre'],
-    needs: ['A wall']
+    needs: ['A wall'],
+    setup: ['solo']
   },
   'three-second-box-out': {
     title: '3-Second Box Out',
@@ -503,7 +532,8 @@ export const drills = {
     level: 'Intermediate',
     group: 'rebounding',
     positions: ['power-forward', 'centre', 'zone'],
-    needs: ['Ball', 'Partner']
+    needs: ['Ball', 'Partner'],
+    setup: ['partner']
   }
 };
 

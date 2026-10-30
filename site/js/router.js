@@ -3,21 +3,20 @@
  *
  * Hash-based so deep links and Back work on GitHub Pages with no server
  * config. Routes:
- *   (empty), #, #/          Skills
- *   #/skills                Skills
- *   #/skills/:slug          Skill group (drills + level filter)
+ *   (empty), #, #/          Find a drill
+ *   #/skills                Find a drill
+ *   #/skills/:slug          Find a drill with that skill selected
  *   #/drills/:slug          Drill
  *   #/positions             Positions
  *   #/positions/zone        Zone defence (reserved word, checked BEFORE :slug)
  *   #/positions/:slug       Position
- *   #/about                 About
- *   anything else           Not found (URL preserved, so Back still works)
+ *   anything else           Not found (URL preserved, so Back still works).
+ *                           That includes the old About page, which no longer exists.
  */
 
-import { skillsView, skillGroupView } from './views/skills.js';
+import { findView } from './views/skills.js';
 import { drillView } from './views/drill.js';
 import { positionsView, positionView, zoneView } from './views/positions.js';
-import { aboutView } from './views/about.js';
 import { notFoundView } from './views/notFound.js';
 
 const SITE_NAME = 'BBallSkills';
@@ -43,35 +42,40 @@ export function parseHash(hash) {
 
 /**
  * Resolve a hash to a rendered view.
- * @returns {{title:string, html:string, tab:string|null}}
+ * @param {string} hash
+ * @param {{href:string,label:string,tab:string}|null} origin  the last non-drill
+ *   route rendered; a drill page uses it for its Back link and current tab.
+ * @returns {{title:string, html:string, tab:string|null, origin?:object}}
+ *   `origin` is set when this route is one a drill can be opened from.
  */
-export function resolve(hash) {
+export function resolve(hash, origin = null) {
   const parts = parseHash(hash);
   const [section, param] = parts;
   const notFound = () => ({ ...notFoundView(hash), tab: null });
+  const FIND = { href: '#/', label: 'Drills', tab: 'drills' };
 
-  if (parts.length === 0) return { ...skillsView(), tab: 'skills' };
+  if (parts.length === 0) return { ...findView(), tab: 'drills', origin: FIND };
 
-  if (section === 'skills' && parts.length === 1) return { ...skillsView(), tab: 'skills' };
+  if (section === 'skills' && parts.length === 1) return { ...findView(), tab: 'drills', origin: FIND };
   if (section === 'skills' && parts.length === 2) {
-    const v = skillGroupView(param);
-    return v ? { ...v, tab: 'skills' } : notFound();
+    const v = findView(param);
+    return v ? { ...v, tab: 'drills', origin: FIND } : notFound();
   }
 
   if (section === 'drills' && parts.length === 2) {
-    const v = drillView(param);
-    return v ? { ...v, tab: 'skills' } : notFound();
+    const v = drillView(param, origin);
+    return v ? { ...v, tab: origin ? origin.tab : 'drills' } : notFound();
   }
 
   if (section === 'positions' && parts.length === 1) return { ...positionsView(), tab: 'positions' };
   if (section === 'positions' && parts.length === 2) {
     // 'zone' is reserved: it must be matched before the :slug lookup.
-    if (param === 'zone') return { ...zoneView(), tab: 'positions' };
+    if (param === 'zone') {
+      return { ...zoneView(), tab: 'positions', origin: { href: '#/positions/zone', label: 'Zone defence', tab: 'positions' } };
+    }
     const v = positionView(param);
-    return v ? { ...v, tab: 'positions' } : notFound();
+    return v ? { ...v, tab: 'positions', origin: { href: `#/positions/${param}`, label: v.title, tab: 'positions' } } : notFound();
   }
-
-  if (section === 'about' && parts.length === 1) return { ...aboutView(), tab: 'about' };
 
   return notFound();
 }
@@ -84,11 +88,16 @@ export function resolve(hash) {
  */
 export function startRouter({ outlet, tabs }) {
   let firstRender = true;
+  // The last route a drill can be opened from, kept in memory only. A drill
+  // page uses it for Back and for the current tab. Drill to drill leaves it
+  // alone, so Back never loops between drills.
+  let origin = null;
 
   function render() {
     let view;
     try {
-      view = resolve(window.location.hash);
+      view = resolve(window.location.hash, origin);
+      if (view.origin) origin = view.origin;
     } catch (err) {
       console.error('Failed to render route', window.location.hash, err);
       view = { ...notFoundView(window.location.hash), tab: null };

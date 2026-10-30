@@ -5,6 +5,7 @@
 
 import { startRouter } from './router.js';
 import { bindInteractions } from './interactions.js';
+import { suggestControl } from './ui.js';
 
 const outlet = document.getElementById('view');
 const tabs = document.querySelectorAll('[data-tab]');
@@ -23,6 +24,10 @@ if (skipLink) {
     outlet.focus();
   });
 }
+
+// The footer is static HTML on every route; the Suggest control goes into it once.
+const suggestSlot = document.getElementById('suggest-slot');
+if (suggestSlot) suggestSlot.innerHTML = suggestControl();
 
 bindInteractions(outlet);
 startRouter({ outlet, tabs });

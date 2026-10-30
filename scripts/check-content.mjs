@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 /**
- * check-content.mjs: content integrity (AC7, AC15, AC16, AC17, AC2/AC23 text scan).
+ * check-content.mjs: content integrity (drills, resources, cross-references, `setup`), plus
+ * the text scans of site/ (forbidden strings, colour literals, fonts).
  * Dev-only; plain Node, no packages. Run: node scripts/check-content.mjs
  * Exits 1 on any failure.
  */
 import { pathToFileURL, fileURLToPath } from 'node:url';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const c = await import(pathToFileURL(join(root, 'site/js/content.js')).href);
-const { drills, resources, skills, positions, zones, config } = c;
+const { drills, resources, skills, positions, zones, config, SETUPS } = c;
 
 let fails = 0;
 let checks = 0;
@@ -45,6 +46,21 @@ for (const k of keys) {
   ok(Array.isArray(d.needs) && d.needs.every(nonEmpty), `${k}.needs is a string array`);
   ok(Array.isArray(d.positions) && d.positions.every((p) => POS.includes(p) || p === 'zone'), `${k}.positions values valid`);
   ok(Object.hasOwn(resources, d.resource), `${k}.resource "${d.resource}" exists`);
+
+  // `setup` drives the Needs filter. It must agree with the free-text `needs`.
+  const setupKeys = SETUPS.map((x) => x.key);
+  ok(eq(setupKeys, ['solo', 'partner', 'hoop']), 'SETUPS are solo, partner, hoop, in that order');
+  ok(Array.isArray(d.setup) && d.setup.length >= 1, `${k}.setup is a non-empty array`);
+  const setup = Array.isArray(d.setup) ? d.setup : [];
+  ok(new Set(setup).size === setup.length, `${k}.setup has no duplicates`);
+  ok(setup.every((v) => setupKeys.includes(v)), `${k}.setup values are in the closed set`);
+  const hasHoop = d.needs.some((n) => n.includes('Hoop'));
+  ok(setup.includes('hoop') === hasHoop, `${k}: setup has "hoop" if and only if needs contains "Hoop"`);
+  const needsPartner = d.needs.some((n) => (n.includes('Partner') && n !== 'Partner (optional)') || n.includes('Group'));
+  if (needsPartner) {
+    ok(setup.includes('partner') && !setup.includes('solo'), `${k}: needs a partner or group, so setup has partner and not solo`);
+  }
+  ok(!(setup.includes('solo') && setup.includes('hoop')), `${k}: setup never has solo and hoop together`);
 }
 
 // --- AC16: resources
@@ -111,18 +127,34 @@ for (const k of keys) {
   for (const f of ['why', 'teaches']) ok(!zoneText.includes(drills[k][f]), `zones does not copy ${k}.${f}`);
 }
 
-// --- AC2 / AC23: forbidden strings in site/
-const FORBIDDEN = ['this week', 'thisweek', 'coach pick', 'localstorage', 'sessionstorage', 'document.cookie', '<form', '<input', '<textarea', 'googletagmanager', 'google-analytics', 'gtag(', 'fonts.googleapis', 'fonts.gstatic'];
+// --- forbidden strings in site/ (the list only ever grows)
+const FORBIDDEN = ['this week', 'thisweek', 'coach pick', 'localstorage', 'sessionstorage', 'document.cookie', '<form', '<input', '<textarea', 'googletagmanager', 'google-analytics', 'gtag(', 'fonts.googleapis', 'fonts.gstatic',
+  'indexeddb', '@font-face', 'barlow', '#/about', 'text-overflow', 'line-clamp'];
 function walk(dir) {
   return readdirSync(dir).flatMap((n) => {
     const p = join(dir, n);
     return statSync(p).isDirectory() ? walk(p) : [p];
   });
 }
-for (const f of walk(join(root, 'site')).filter((p) => ['.html', '.js', '.css', '.txt', ''].includes(extname(p)) && !p.endsWith('OFL.txt'))) {
+for (const f of walk(join(root, 'site')).filter((p) => ['.html', '.js', '.css', '.txt', ''].includes(extname(p)))) {
   const text = readFileSync(f, 'utf8').toLowerCase();
   for (const bad of FORBIDDEN) ok(!text.includes(bad), `${f.replace(root + '/', '')} has no "${bad}"`);
 }
+
+// --- no self-hosted fonts, and no colour literal outside tokens.css
+ok(!existsSync(join(root, 'site/fonts')), 'site/fonts does not exist (no self-hosted fonts)');
+ok(!existsSync(join(root, 'site/js/views/about.js')), 'site/js/views/about.js does not exist (About is removed)');
+const COLOUR_LITERAL = /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(|%23[0-9a-f]{3,8}/i;
+for (const f of walk(join(root, 'site/css')).filter((p) => extname(p) === '.css' && !p.endsWith('tokens.css'))) {
+  const text = readFileSync(f, 'utf8');
+  const hit = text.match(COLOUR_LITERAL);
+  ok(!hit, `${f.replace(root + '/', '')} has no colour literal outside tokens.css${hit ? ` (found "${hit[0]}")` : ''}`);
+}
+const tokensCss = readFileSync(join(root, 'site/css/tokens.css'), 'utf8');
+const indexHtml = readFileSync(join(root, 'site/index.html'), 'utf8');
+const bgToken = (tokensCss.match(/--color-bg:\s*(#[0-9A-Fa-f]{6})/) || [])[1];
+ok(/<meta name="color-scheme" content="light">/.test(indexHtml), 'index.html color-scheme is light');
+ok(!!bgToken && indexHtml.includes(`<meta name="theme-color" content="${bgToken}">`), `index.html theme-color equals --color-bg (${bgToken})`);
 
 // --- AC25: no build step
 for (const f of ['package.json', 'package-lock.json']) {
